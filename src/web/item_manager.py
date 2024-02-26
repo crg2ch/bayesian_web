@@ -47,5 +47,8 @@ class ItemManager:
            else:
                self.items[impressed_video_id]['p_b'] += 1
   
-   def show_current_state(self):
-       return self.items
+   def show_current_state(self, video_id=None):
+       if video_id is not None:
+           return self.items.get(video_id, {})
+       else:
+           return self.items

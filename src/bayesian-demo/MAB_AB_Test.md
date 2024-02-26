@@ -1,4 +1,3 @@
-https://towardsdatascience.com/beyond-a-b-testing-multi-armed-bandit-experiments-1493f709f804
 # Multi-armed Bandit 을 사용한 A/B 테스트
 ## A/B 테스트의 특성 및 단점
 * A/B 테스트는 두 가지 이상의 대안을 비교하는 가장 일반적인 실험 디자인이다
@@ -25,14 +24,16 @@ https://towardsdatascience.com/beyond-a-b-testing-multi-armed-bandit-experiments
 클릭을 해야 재생되는 동영상 광고가 있다고 해보자. 광고 시청 시간이 최대가 되게 하려면 어떻게 해야 할까?
 
 동영상 광고가 노출되었을 때, 광고 시청 시간은 다음과 같다.
-$$\text{광고 시청 시간} = \begin{cases}0&&\text{클릭 안 한 경우}\\ \text{시청 시간}&&\text{클릭한 경우}\end{cases}$$
+
+$$\text{광고 시청 시간} = \begin{cases}0&&\text{클릭 안 한 경우}\\ 
+\text{시청 시간}&&\text{클릭한 경우}\end{cases}$$
 
 광고 시청 시간을 두 개의 랜덤변수의 곱으로 표현할 수 있다.
 $$X=Y\cdot Z$$
 
 $X:\text{광고 시청 시간}$
 
-$Y=\begin{cases}0&&\text{클릭 안 한 경우}\\1&&\text{클릭한 경우}\end{cases}$
+$`Y=\begin{cases}0&&\text{클릭 안 한 경우}\\1&&\text{클릭한 경우}\end{cases}`$
 
 $Z:\text{클릭했다는 조건에서 광고 시청시간}$
 
@@ -48,8 +49,8 @@ $Z:\text{클릭했다는 조건에서 광고 시청시간}$
 랜덤변수 $Y$와 $Z$를 다음과 같이 모델링하자.
 
 $$
-Y\sim Bernoulli(p),\quad p\sim\Beta(\alpha_p,\beta_p)\\
-Z\sim\exp(\lambda),\quad \lambda\sim\Gamma(\alpha_\lambda,\beta_\lambda)
+\displaylines{Y\sim Bernoulli(p),\quad p\sim B(\alpha_p,\beta_p)\\ 
+Z\sim\exp(\lambda),\quad \lambda\sim\Gamma(\alpha_\lambda,\beta_\lambda)}
 $$
 
 Bayes' rule 에 의해 사전분포는 관찰된 데이터를 바탕으로 다음과 같이 업데이트 된다.
@@ -60,18 +61,21 @@ $$\text{사후분포} \propto Likelihood \cdot 사전분포$$
 
 ### $p$ 확률 업데이트
 Bayes' rule을 $p$에 적용하면,
+
 $$\begin{align}\Pr(p|y_1,...,y_n,\alpha_p,\beta_p)\propto \Pr(y_1,...,y_n|p,\alpha_p,\beta_p)\cdot\Pr(p|\alpha_p,\beta_p) \\
 \propto p^{\sum\limits_{i=1}^ny_i}(1-p)^{\sum\limits_{i=1}^n(1-y_i)}\cdot p^{\alpha_p}(1-p)^{\beta_p}\\
 =p^{\alpha_p+\sum\limits_{i=1}^ny_i}(1-p)^{\beta_p+\sum\limits_{i=1}^n(1-y_i)}\\
-\propto\Beta(\alpha_p+\sum\limits_{i=1}^ny_i, \beta_p+\sum\limits_{i=1}^n(1-y_i))\end{align}$$
+\propto B(\alpha_p+\sum\limits_{i=1}^ny_i, \beta_p+\sum\limits_{i=1}^n(1-y_i))\end{align}$$
 
 따라서 $p$의 확률은 베타분포가 유지되고, 베타분포의 모수만 다음과 같이 업데이트 된다.
 
-$\alpha_p\leftarrow\alpha_p+\sum\limits_{i=1}^ny_i\\
-\beta_p\leftarrow\beta_p+\sum\limits_{i=1}^n(1-y_i)$
+$\alpha_p\leftarrow\alpha_p+\sum\limits_{i=1}^ny_i$
+
+$\beta_p\leftarrow\beta_p+\sum\limits_{i=1}^n(1-y_i)$
 
 ### $\lambda$ 확률 업데이트
 Bayes' rule을 $\lambda$에 적용하면,
+
 $$\begin{align} \Pr(\lambda|z_1,...,z_m,\alpha_\lambda,\beta_\lambda) \propto\Pr(z_1,...,z_m|\lambda,\alpha_\lambda,\beta_\lambda)\cdot\Pr(\lambda|\alpha_\lambda,\beta_\lambda)\\
 \propto \lambda^me^{-\lambda\sum\limits_{i=1}^mz_i}\lambda^{\alpha_\lambda-1}e^{-\beta_\lambda\lambda}\\
 \propto\lambda^{\alpha_\lambda+m-1}e^{-(\beta_\lambda+\sum\limits_{i=1}^mz_i)\lambda}\\
@@ -79,8 +83,9 @@ $$\begin{align} \Pr(\lambda|z_1,...,z_m,\alpha_\lambda,\beta_\lambda) \propto\Pr
 
 마찬가지로 $\lambda$의 확률은 감마분포가 유지되고, 감마분포의 모수만 다음과 같이 업데이트 된다.
 
-$\alpha_\lambda\leftarrow\alpha_\lambda+m\\
-\beta_\lambda\leftarrow\beta_\lambda+\sum\limits_{i=1}^mz_i$
+$\alpha_\lambda\leftarrow\alpha_\lambda+m$
+
+$\beta_\lambda\leftarrow\beta_\lambda+\sum\limits_{i=1}^mz_i$
 
 <br>
 
@@ -271,3 +276,8 @@ def k_arm_bandit(ctrs, lambdas, alpha=0.05, burn_in=1000, max_iter=100_000, draw
 ![실험 결과](images/experiment-result.png)
 
 * 그림을 보면, 시행 초기에는 챔피온을 광고2로 잘못 인식하였지만, 시행을 지속하면서 광고1이 챔피온으로 올라왔고, 이후 실험이 종료되었다.
+
+# Reference
+* https://towardsdatascience.com/beyond-a-b-testing-multi-armed-bandit-experiments-1493f709f804
+* https://en.wikipedia.org/wiki/Conjugate_prior
+* https://en.wikipedia.org/wiki/Bayesian_inference
