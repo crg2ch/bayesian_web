@@ -88,7 +88,7 @@ $ python src/server.py
 
 $$X = Y\cdot Z$$
 
-$Y=\begin{cases}1&&\text{썸네일 클릭}\\ 0&&\text{썸네일 클릭 안 함}\end{cases}$
+$`Y=\begin{cases}1&&\text{썸네일 클릭}\\ 0&&\text{썸네일 클릭 안 함}\end{cases}`$
 
 $Z$: 상세 페이지에 들어왔다는 조건에서, 상세 페이지에 머문 시간
 
