@@ -25,7 +25,7 @@ YOUTUBE_API_KEY=YOUR_YOUTUBE_API_KEY
 
 다음은 채널 id를 얻는 방법 중 하나입니다.
 
-* 채널 이름 아래 채널 설명 페이지 클릭
+* 채널 이름 아래 채널 설명 부분 클릭
 
 ![get channel_iD 2](images/get_channel_id1.png)
 
