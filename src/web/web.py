@@ -42,6 +42,8 @@ def update_lambda():
    lambda_a, lambda_b = item_manager.update_lambda(video_id, time_spent)
    return f'Updated video_id: {video_id}, lambda_a: {lambda_a}, lambda_b: {lambda_b}'
 
-@web.route('/current-state')
-def current_state():
-   return jsonify(item_manager.show_current_state())
+@web.route('/current-state/<video_id>', methods=['GET'])
+def current_state(video_id=None):
+   if video_id == 'all':
+      return jsonify(item_manager.show_current_state())
+   return jsonify(item_manager.show_current_state(video_id))
