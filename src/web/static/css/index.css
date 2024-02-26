@@ -1,0 +1,15 @@
+.thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 40px;
+ }
+ 
+ .thumbnail {
+    width: 480px;
+    height: 360px;
+    margin: 40px;
+    float: left;
+    cursor: pointer; /* 클릭 가능한 요소로 설정 */
+ }
+  

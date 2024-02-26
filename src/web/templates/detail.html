@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>콘텐츠 상세 페이지</title>
+</head>
+<body>
+   <h1>{{ item.video_title | safe }}</h1>
+   <!-- YouTube 영상을 삽입할 위치 -->
+   <iframe width="560" height="315" src="{{ 'https://www.youtube.com/embed/' + video_id }}" frameborder="0" allowfullscreen></iframe>
+   <p>{{ item.video_description | safe }}</p>
+   <br>
+   <a href="{{ url_for('web.index') }}">Back to index</a>
+
+   <script>
+       document.addEventListener('DOMContentLoaded', () => {
+           const enterTime = new Date();
+           const videoId = '{{ video_id }}';
+
+           window.addEventListener('beforeunload', () => {
+               const leaveTime = new Date();
+               const timeSpent = leaveTime - enterTime;
+
+               const xhr = new XMLHttpRequest();
+               xhr.open("POST", "{{ url_for('web.update_lambda') }}", true);
+               xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+               xhr.send("video_id=" + videoId + "&time_spent=" + timeSpent);
+           });
+       });
+   </script>
+</body>
+</html>

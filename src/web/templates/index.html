@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>콘텐츠 추천 데모</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+   <div id="thumbnails"></div>
+   <script>
+       const items = {{ items | tojson | safe }};
+       const itemDetailUrl = "{{ url_for('web.detail_page', video_id='') | safe }}";
+   </script>
+   <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>
