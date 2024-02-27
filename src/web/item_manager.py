@@ -12,6 +12,7 @@ class ItemManager:
        df['p_b'] = 1
        df['lambda_a'] = 1
        df['lambda_b'] = 1
+       df['score'] = 1
 
        items = {}
        for _, row in df.iterrows():
