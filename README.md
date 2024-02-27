@@ -179,9 +179,10 @@ $ flyctl auth login
 
 * 다음 명령어를 실행하여 배포를 위한 준비 작업을 합니다.
     * 현재 프로젝트는 이미 실행하였기 때문에 이 작업은 생략 가능합니다
+    * --ha=false 옵션: 단일 머신 생성. (fly는 기본값이 2개 머신 생성)
 
 ```console
-$ fly launch
+$ fly launch --ha=false
 ```
 
 * Procfile 파일을 적절하게 수정해줍니다.
@@ -226,9 +227,10 @@ primary_region = 'nrt'
 * app의 이름은 'bayesian-web' 입니다. `auto_stop_machines`과 `auto_start_machines`는 모두 true로 하거나 모두 false로 하는 것을 권장합니다.
 * 이제 배포를 위한 모든 단계가 완료되었습니다.
 * 다음 명령어를 실행하여 배포하세요.
+    * --ha=false 옵션: 단일 머신 생성 옵션
 
 ```console
-$ fly deploy
+$ fly deploy --ha=false
 ```
 
 * 이 작업은 몇 분 정도 소요됩니다.
